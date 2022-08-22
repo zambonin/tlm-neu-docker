@@ -1,0 +1,28 @@
+services:
+  tomcat-tlm-neu:
+    container_name: tomcat-tlm-neu
+    ports:
+      - 8080:8080
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: tomcat
+  mysql-tlm-neu:
+    container_name: mysql-tlm-neu
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: MYSQL_ALLOW_EMPTY_PASSWORD=1
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'changeme'
+      MYSQL_DATABASE: 'tsl-noneu'
+    # MYSQL_DATABASE and the command below are equivalent to the `CREATE
+    # DATABASE` command on Section 2.3 of the manual.
+    #
+    # The last option is set because `migration-script.sql` creates lower case
+    # table names and the Java code uses upper case table names.
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci --lower_case_table_names=1
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: mysql

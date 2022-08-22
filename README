@@ -1,0 +1,22 @@
+Docker-related files that allow running an instance of Trusted List Manager
+non-EU v5.0 [1] with reduced configuration effort. See "Trusted List Browser"
+on [2] for more information on this software and the concepts behind TLs.
+
+The containers run newer versions of the software stack in which tests were
+made by the developers (cf. Section 2.1 of the manual [3]): Apache Tomcat
+8 (under Java 8) and MySQL 5.7, both running on Debian "buster".
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│    To achieve database persistence, see the comments on the Dockerfile!    │
+└────────────────────────────────────────────────────────────────────────────┘
+
+It can be tested from a terminal as follows.
+
+    $ docker-compose up
+
+A page should be appear at http://localhost:8080/tl-manager-non-eu; login with
+`test` and `password`. Please refer to the manual to use the application [3].
+
+[1] https://ec.europa.eu/digital-building-blocks/wikis/display/TLSO/Trusted+List+Manager+non-EU
+[2] https://ec.europa.eu/digital-building-blocks/wikis/display/DIGITAL/eSignature+FAQ
+[3] https://ec.europa.eu/digital-building-blocks/wikis/display/TLSO/Trusted+List+Manager+non-EU?preview=/75665517/75666123/TLManager%20Non-EU%20-%205.0%20-%20Installation%20and%20Utilisation.pdf
