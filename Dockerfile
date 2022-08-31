@@ -53,3 +53,16 @@ FROM mysql:5.7.39-debian AS mysql
 COPY --from=assets \
     /root/tlm-neu-static/migration-script.sql \
     /docker-entrypoint-initdb.d/
+
+#
+# This stage sets up a Caddy instance that simply rewrites and proxies URLs so
+# that one can access the service directly via $DOMAIN_NAME.
+#
+FROM caddy:2.5.2-alpine AS caddy
+
+ARG DOMAIN_NAME
+
+RUN printf "$DOMAIN_NAME {\n\
+	reverse_proxy tomcat-tlm-neu:8080\n\
+	rewrite / /tl-manager-non-eu\n\
+}\n" > /etc/caddy/Caddyfile

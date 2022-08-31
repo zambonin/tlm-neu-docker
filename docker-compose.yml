@@ -36,3 +36,23 @@ services:
       - --lower_case_table_names=1
       # Disables deprecation warning from MySQL.
       - --explicit_defaults_for_timestamp=1
+  caddy-tlm-neu:
+    container_name: caddy-tlm-neu
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: caddy
+      args:
+        DOMAIN_NAME: http://localhost:80
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:

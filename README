@@ -4,7 +4,8 @@ on [2] for more information on this software and the concepts behind TLs.
 
 The containers run newer versions of the software stack in which tests were
 made by the developers (cf. Section 2.1 of the manual [3]): Apache Tomcat
-8 (under Java 8) and MySQL 5.7, both running on Debian "buster".
+8.5 (under Java 8) and MySQL 5.7, both running on Debian "buster", and a Caddy
+web server on Alpine for automatic HTTPS and pretty URLs.
 
 ┌────────────────────────────────────────────────────────────────────────────┐
 │    To achieve database persistence, see the comments on the Dockerfile!    │
@@ -12,10 +13,11 @@ made by the developers (cf. Section 2.1 of the manual [3]): Apache Tomcat
 
 It can be tested from a terminal as follows.
 
+    $ docker volume create caddy_data
     $ docker-compose up
 
-A page should appear at http://localhost:8080/tl-manager-non-eu -- login with
-`test` and `password`. Please refer to the manual to use the application [3].
+A page should appear at http://localhost:80 -- login with user `test` and
+password `password`. Please refer to the manual to use the application [3].
 
 [1] https://ec.europa.eu/digital-building-blocks/wikis/display/TLSO/Trusted+List+Manager+non-EU
 [2] https://ec.europa.eu/digital-building-blocks/wikis/display/DIGITAL/eSignature+FAQ
