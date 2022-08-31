@@ -14,7 +14,7 @@ It can be tested from a terminal as follows.
 
     $ docker-compose up
 
-A page should be appear at http://localhost:8080/tl-manager-non-eu; login with
+A page should appear at http://localhost:8080/tl-manager-non-eu -- login with
 `test` and `password`. Please refer to the manual to use the application [3].
 
 [1] https://ec.europa.eu/digital-building-blocks/wikis/display/TLSO/Trusted+List+Manager+non-EU

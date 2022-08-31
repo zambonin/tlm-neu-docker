@@ -1,3 +1,9 @@
+#
+# This build stage downloads the application as released by the European
+# Commission and unzips its contents to a known folder. It's a separate stage
+# because files need to go into multiple containers. Caching this stage also
+# helps because the download speed is not very fast.
+#
 FROM bitnami/minideb:bullseye AS assets
 
 ENV TL_NEU_VERSION          5.0
@@ -11,6 +17,10 @@ RUN install_packages \
 RUN curl $TL_NEU_DOWNLOAD_URL -o - \
     | bsdtar xf - --strip-components=1 -C /root/tlm-neu-static
 
+#
+# This stage sets up a Tomcat instance according to Sections 2.4 and 2.5 of
+# the manual. The CAS server provided by the developers is used.
+#
 FROM tomcat:8.5.82-jre8-openjdk-slim-buster AS tomcat
 
 COPY --from=assets /root/tlm-neu-static/webapps /usr/local/tomcat/webapps/
@@ -22,9 +32,8 @@ COPY --from=assets \
 # Section 2.5 of the manual points out that the persistence configuration is
 # `create` for the first run and `validate` for all subsequent runs. Thus, the
 # command below should be uncommented after the first run of the containers.
-#
-RUN sed -i 's/create/validate/' \
-   /usr/local/tomcat/lib/application-tlmanager-non-eu-custom.properties
+# RUN sed -i 's/create/validate/' \
+#    /usr/local/tomcat/lib/application-tlmanager-non-eu-custom.properties
 
 # USERNAME and PASSWORD are MYSQL_USER and MYSQL_PASSWORD from the
 # `docker-compose.yml` file, respectively. `localhost` is swapped by the name
@@ -35,6 +44,9 @@ RUN sed -i 's/<USERNAME>/user/; \
             s/xxx.xxx.xxx.xxx/localhost/' \
     /usr/local/tomcat/lib/application-tlmanager-non-eu-custom.properties
 
+#
+# This stage sets up a MySQL instance according to Section 2.3 of the manual.
+#
 FROM mysql:5.7.39-debian AS mysql
 
 COPY --from=assets \
