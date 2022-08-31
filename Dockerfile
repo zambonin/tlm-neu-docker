@@ -23,6 +23,10 @@ RUN curl $TL_NEU_DOWNLOAD_URL -o - \
 #
 FROM tomcat:8.5.82-jre8-openjdk-slim-buster AS tomcat
 
+ARG MYSQL_USER
+ARG MYSQL_PASSWORD
+ARG DOMAIN_NAME
+
 COPY --from=assets /root/tlm-neu-static/webapps /usr/local/tomcat/webapps/
 COPY --from=assets /root/tlm-neu-static/lib /usr/local/tomcat/lib/
 COPY --from=assets \
@@ -35,13 +39,10 @@ COPY --from=assets \
 # RUN sed -i 's/create/validate/' \
 #    /usr/local/tomcat/lib/application-tlmanager-non-eu-custom.properties
 
-# USERNAME and PASSWORD are MYSQL_USER and MYSQL_PASSWORD from the
-# `docker-compose.yml` file, respectively. `localhost` is swapped by the name
-# of the container.
-RUN sed -i 's/<USERNAME>/user/; \
-            s/<PASSWORD>/changeme/; \
+RUN sed -i "s/<USERNAME>/$MYSQL_USER/; \
+            s/<PASSWORD>/$MYSQL_PASSWORD/; \
             s/localhost/mysql-tlm-neu/; \
-            s/xxx.xxx.xxx.xxx/localhost/' \
+            s|http://xxx.xxx.xxx.xxx:8080|$DOMAIN_NAME|" \
     /usr/local/tomcat/lib/application-tlmanager-non-eu-custom.properties
 
 #

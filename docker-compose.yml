@@ -6,6 +6,10 @@ services:
       context: .
       dockerfile: Dockerfile
       target: tomcat
+      args:
+        MYSQL_USER: user
+        MYSQL_PASSWORD: changeme
+        DOMAIN_NAME: http://localhost:8080
     ports:
       - "8080:8080"
   mysql-tlm-neu:
