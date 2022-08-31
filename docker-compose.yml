@@ -30,3 +30,5 @@ services:
       # Needed because `migration-script.sql` creates lower case table names
       # and the Java code uses upper case table names.
       - --lower_case_table_names=1
+      # Disables deprecation warning from MySQL.
+      - --explicit_defaults_for_timestamp=1
