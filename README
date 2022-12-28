@@ -7,6 +7,10 @@ made by the developers (cf. Section 2.1 of the manual [3]): Apache Tomcat
 8.5 (under Java 8) and MySQL 5.7, both running on Debian "buster", and a Caddy
 web server on Alpine for automatic HTTPS and pretty URLs.
 
+Two versions of the software are supported: the original release and an
+internationalized (i18n) version. They can be built via a command-line argument
+as explained below; i18n is built by default.
+
 ┌────────────────────────────────────────────────────────────────────────────┐
 │    To achieve database persistence, see the comments on the Dockerfile!    │
 └────────────────────────────────────────────────────────────────────────────┘
@@ -14,6 +18,7 @@ web server on Alpine for automatic HTTPS and pretty URLs.
 It can be tested from a terminal as follows.
 
     $ docker volume create caddy_data
+    $ docker-compose build --build-arg SOURCE=eu  # or SOURCE=i18n
     $ docker-compose up
 
 A page should appear at http://localhost:80 -- login with user `test` and
